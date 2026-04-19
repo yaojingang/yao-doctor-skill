@@ -13,23 +13,9 @@ It scans skill packages and supported workbench configuration targets, separates
 
 ## Report Screenshots
 
-These screenshots show the current homepage sections of the generated HTML report. The exact numbers will change with the scanned library.
+This merged 2×2 gallery shows the current homepage sections of the generated HTML report. The exact numbers will change with the scanned library.
 
-### Overview
-
-![Report Overview](docs/images/report-overview.png)
-
-### Data Analysis
-
-![Data Analysis](docs/images/data-analysis.png)
-
-### Metric Definitions
-
-![Metric Definitions](docs/images/metric-definitions.png)
-
-### Module Example
-
-![Module Example](docs/images/module-example.png)
+![Merged Report Gallery](docs/images/readme-gallery-redacted.png)
 
 ## What It Audits
 

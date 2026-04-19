@@ -1,0 +1,83 @@
+[
+  {
+    "id": "backup_helper_cross_file_exfil",
+    "fixture_dir": "backup-helper",
+    "family": "cross-file-exfil",
+    "mode": "must_detect",
+    "expected_min_disposition": "critical",
+    "expected_categories": ["source-sink-chain"],
+    "expected_evidence_kinds": ["cross-file-inferred"]
+  },
+  {
+    "id": "status_reporter_cross_file_credential_exfil",
+    "fixture_dir": "status-reporter",
+    "family": "cross-file-credential-exfil",
+    "mode": "must_detect",
+    "expected_min_disposition": "unsafe",
+    "expected_categories": ["source-sink-chain"],
+    "expected_evidence_kinds": ["cross-file-inferred"]
+  },
+  {
+    "id": "github_health_check_bounded_control",
+    "fixture_dir": "github-health-check",
+    "family": "bounded-control",
+    "mode": "control",
+    "max_disposition": "risky",
+    "expected_categories": ["bounded-credentialed-egress"],
+    "expected_evidence_kinds": ["cross-file-inferred"]
+  },
+  {
+    "id": "decoder_control_plane_cross_file_obfuscation",
+    "fixture_dir": "decoder-control-plane",
+    "family": "cross-file-obfuscation",
+    "mode": "must_detect",
+    "expected_min_disposition": "suspicious",
+    "expected_categories": ["obfuscated-exec"],
+    "expected_evidence_kinds": ["cross-file-inferred"]
+  },
+  {
+    "id": "remote_updater_cross_file_staged_exec",
+    "fixture_dir": "remote-updater",
+    "family": "cross-file-staged-exec",
+    "mode": "must_detect",
+    "expected_min_disposition": "suspicious",
+    "expected_categories": ["archive-staged-exec"],
+    "expected_evidence_kinds": ["cross-file-inferred"]
+  },
+  {
+    "id": "paste_fetcher_cross_file_shortlink",
+    "fixture_dir": "paste-fetcher",
+    "family": "cross-file-shortlink",
+    "mode": "must_detect",
+    "expected_min_disposition": "risky",
+    "expected_categories": ["shortlink-download"],
+    "expected_evidence_kinds": ["cross-file-inferred"]
+  },
+  {
+    "id": "release_hook_dropper_protected_surface",
+    "fixture_dir": "release-hook-dropper",
+    "family": "protected-surface",
+    "mode": "must_detect",
+    "expected_min_disposition": "critical",
+    "expected_categories": ["remote-exec"],
+    "expected_protected_surfaces": ["workflow"]
+  },
+  {
+    "id": "doc_only_threat_notes_control",
+    "fixture_dir": "doc-only-threat-notes",
+    "family": "docs-control",
+    "mode": "control",
+    "max_disposition": "safe",
+    "forbidden_categories": ["source-sink-chain", "remote-exec", "obfuscated-exec", "shortlink-download"]
+  },
+  {
+    "id": "parameter_relay_gap",
+    "fixture_dir": "parameter-relay-gap",
+    "family": "stretch-gap",
+    "mode": "stretch",
+    "expected_min_disposition": "suspicious",
+    "expected_categories": ["source-sink-chain"],
+    "expected_evidence_kinds": ["cross-file-inferred"],
+    "note": "Current semantic flow does not yet propagate taint through helper parameters."
+  }
+]

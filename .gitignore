@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.DS_Store
+
+_cache/
+_eval_reports/
+_yao_doctor_skill_reports/
+_skill_doctor_reports
+
+*.log

@@ -1,0 +1,25 @@
+{
+  "name": "yao-doctor-skill",
+  "version": "1.0.0",
+  "owner": "laoyao",
+  "updated_at": "2026-04-19",
+  "status": "active",
+  "maturity_tier": "governed",
+  "lifecycle_stage": "governed",
+  "context_budget_tier": "governed",
+  "review_cadence": "monthly",
+  "skill_archetype": "governed",
+  "target_platforms": [
+    "openai",
+    "claude",
+    "generic",
+    "agent-skills-compatible",
+    "openclaw"
+  ],
+  "factory_components": [
+    "references",
+    "scripts",
+    "reports",
+    "evals"
+  ]
+}

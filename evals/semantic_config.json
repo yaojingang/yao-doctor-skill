@@ -1,0 +1,13 @@
+{
+  "target_intent": "skill-security-audit",
+  "accept_when": [
+    "the request is about security-reviewing one skill or a skill library",
+    "the request explicitly mentions privacy theft, credential leakage, exfiltration, hidden behavior, or unsafe execution inside skills",
+    "the user wants a visual security report for skills"
+  ],
+  "reject_when": [
+    "the request is about cleanup, usage analytics, or stale skills with no security audit need",
+    "the request is about generic application security rather than skill packages",
+    "the request is about creating a new skill instead of auditing one"
+  ]
+}

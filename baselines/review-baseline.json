@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "updated_at_utc": "2026-04-19T04:18:00Z",
+  "entries": [
+    {
+      "id": "yao-meta-skill-github-benchmark-reviewed",
+      "skill": "yao-meta-skill",
+      "path": "scripts/github_benchmark_scan.py",
+      "category": "bounded-credentialed-egress",
+      "line": 98,
+      "status": "accepted-risk",
+      "reviewed_at_utc": "2026-04-19T04:18:00Z",
+      "reason": "Manual review confirmed this is a GitHub API integration with explicit host allowlist enforcement. Keep visible, but mark as reviewed bounded egress."
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+[
+  {
+    "text": "Scan my local and OpenClaw skills for privacy theft, credential exfiltration, and hidden behavior before I enable them.",
+    "label": "accept",
+    "family": "skill_library_security"
+  },
+  {
+    "text": "Review this third-party skill package for unsafe network calls, token theft, or stealthy prompt instructions.",
+    "label": "accept",
+    "family": "single_skill_security"
+  },
+  {
+    "text": "Generate a visual HTML report that separates capability risk from truly unsafe skill behavior.",
+    "label": "accept",
+    "family": "security_report"
+  },
+  {
+    "text": "Tell me which skills are stale and should be archived.",
+    "label": "reject",
+    "family": "cleanup_only"
+  },
+  {
+    "text": "Review this React app for security issues.",
+    "label": "reject",
+    "family": "app_security"
+  },
+  {
+    "text": "Create a new skill from scratch for sending emails.",
+    "label": "reject",
+    "family": "new_skill_creation"
+  }
+]

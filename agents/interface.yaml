@@ -1,0 +1,26 @@
+interface:
+  display_name: "Yao Doctor Skill"
+  short_description: "Audit skill packages for unsafe privacy, credential, and exfiltration behavior"
+  default_prompt: "Use $yao-doctor-skill to security-review a local or OpenClaw skill library and generate a visual HTML report."
+compatibility:
+  canonical_format: "agent-skills"
+  adapter_targets:
+    - "openai"
+    - "claude"
+    - "generic"
+    - "openclaw"
+  activation:
+    mode: "manual"
+    paths: []
+  execution:
+    context: "inline"
+    shell: "bash"
+  trust:
+    source_tier: "local"
+    remote_inline_execution: "forbid"
+    remote_metadata_policy: "allow-metadata-only"
+  degradation:
+    openai: "metadata-adapter"
+    claude: "neutral-source-plus-adapter"
+    generic: "neutral-source"
+    openclaw: "neutral-source"

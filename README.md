@@ -2,12 +2,34 @@
 
 `yao-doctor-skill` is a security-first audit skill for local skill libraries and AI workbench surfaces.
 
+[中文说明](docs/中文说明.md)
+
 It scans skill packages and supported workbench configuration targets, separates `capability risk` from `unsafe behavior`, and renders a bilingual HTML audit report with:
 
 - global overview
 - type-based data analysis
 - per-module audit opinion cards
 - concrete evidence trails with paths, lines, evidence kind, and confidence
+
+## Report Screenshots
+
+These screenshots show the current homepage sections of the generated HTML report. The exact numbers will change with the scanned library.
+
+### Overview
+
+![Report Overview](docs/images/report-overview.png)
+
+### Data Analysis
+
+![Data Analysis](docs/images/data-analysis.png)
+
+### Metric Definitions
+
+![Metric Definitions](docs/images/metric-definitions.png)
+
+### Module Example
+
+![Module Example](docs/images/module-example.png)
 
 ## What It Audits
 

